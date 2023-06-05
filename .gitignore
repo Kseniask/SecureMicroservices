@@ -1,0 +1,34 @@
+# .NET Core
+*.dll
+*.exe
+*.pdb
+obj/
+bin/
+
+# Visual Studio
+.vs/
+*.suo
+*.userprefs
+*.csproj.user
+
+# Test Results
+TestResults/
+
+# Build results
+[DR]elease/
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+.builds
