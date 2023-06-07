@@ -230,7 +230,7 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            return View();
+            return Redirect("~/Movies/AccessDenied");
         }
 
 

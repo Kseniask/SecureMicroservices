@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Movies.Client.ApiServices;
 using Movies.Client.Models;
+using System.Data.Common;
 using System.Diagnostics;
 
 namespace Movies.Client.Controllers
@@ -103,7 +104,21 @@ namespace Movies.Client.Controllers
             return RedirectToAction("Index", "Movies");
         }
 
-        private async Task<bool> MovieExists(int id)
+		public async Task<IActionResult> OnlyAdmin()
+		{
+			if (!User.IsInRole("admin"))
+			return View("~/Views/Shared/AccessDenied.cshtml");
+;
+			var userInfo = await _movieApiService.GetUserInfo();
+            return View(userInfo);
+        }
+
+		public IActionResult AccessDenied()
+		{
+			return View();
+		}
+
+		private async Task<bool> MovieExists(int id)
         {
           return ((await _movieApiService.GetMovies())?.Any(e => e.Id == id)).GetValueOrDefault();
         }

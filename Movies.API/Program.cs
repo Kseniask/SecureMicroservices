@@ -17,7 +17,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "movieClient"));
+    options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "movies_mvc_client"));
 });
 
 // Add services to the container.

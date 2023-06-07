@@ -9,5 +9,6 @@ namespace Movies.Client.ApiServices
         Task<Movie> CreateMovie(Movie movie);
         Task<Movie> UpdateMovie(Movie movie, int id);
         Task DeleteMovie(int id);
+        Task<UserInfoViewModel> GetUserInfo();
     }
 }

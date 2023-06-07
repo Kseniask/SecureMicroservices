@@ -1,6 +1,10 @@
-﻿using IdentityModel.Client;
+﻿using IdentityModel;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Movies.Client.ApiServices;
 using Movies.Client.HttpHandler;
@@ -22,11 +26,22 @@ builder.Services.AddAuthentication(options =>
         options.Authority = "https://localhost:5005";
         options.ClientId = "movies_mvc_client";
         options.ClientSecret = "secret";
-        options.ResponseType = "code";
-        options.Scope.Add("openid");
-        options.Scope.Add("profile");
+        options.ResponseType = "code id_token";
+        /*  options.Scope.Add("openid");
+        options.Scope.Add("profile");*/
+        options.Scope.Add("address");
+        options.Scope.Add("email");
+        options.Scope.Add("roles");
+        options.Scope.Add("movieAPI");
+
+        options.ClaimActions.MapUniqueJsonKey("role", "role");
         options.SaveTokens = true;
         options.GetClaimsFromUserInfoEndpoint = true;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = JwtClaimTypes.GivenName,
+            RoleClaimType = JwtClaimTypes.Role,
+        };
     });
 
 // create httpClient for accesing api
@@ -46,15 +61,16 @@ builder.Services.AddHttpClient("IDPClient", client =>
     client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
 });
 
-builder.Services.AddSingleton(new ClientCredentialsTokenRequest
+//to access token with http context
+builder.Services.AddHttpContextAccessor();
+
+/*builder.Services.AddSingleton(new ClientCredentialsTokenRequest
 {
     Address = "https://localhost:5005/connect/token",
     ClientId = "movieClient",
     ClientSecret = "secret",
     Scope = "movieAPI"
-});
-
-
+});*/
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
